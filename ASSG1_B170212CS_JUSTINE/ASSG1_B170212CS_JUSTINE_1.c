@@ -91,6 +91,7 @@ void main(int argc, char const *argv[])
  if(fp == NULL)
     {
         printf("FILE EMPTY\n");
+        exit(0);
         
     }
 

@@ -45,7 +45,7 @@ void preorder(struct node* root,FILE *fp)
         printf("(");
         fprintf(fp,"("); 
         printf("%d",root->data);
-        fprintf("%d",root->data); 
+        fprintf(fp,"%d",root->data); 
         preorder(root->left,fp);
         preorder(root->right,fp);
         //printf("%d",root->data);

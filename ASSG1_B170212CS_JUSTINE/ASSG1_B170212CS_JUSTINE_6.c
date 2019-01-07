@@ -6,7 +6,37 @@ struct node
 	struct  node *left;
 	struct  node *right;
 };
-
+struct queue
+{
+	struct node* data;
+	struct queue* next;
+};
+struct queue *top = NULL;
+void push(struct node* val)
+{
+    struct queue* head=(struct queue*)malloc(sizeof(struct queue));
+    struct queue* temp=top;
+	head->data=val;
+    head->next=NULL;
+	if(top==NULL)
+	{
+		top=head;
+	}
+	else{
+		while(temp->next!=NULL)
+		{
+			temp=temp->next;
+		}
+		temp->next=head;
+	}
+   
+}
+void pop()
+{
+    struct queue* temp=top;
+    top=top->next;
+    free(temp);
+}
 struct node* newnode(int val)
 {
 	struct node *nodes=(struct node*)malloc(sizeof(struct node));
@@ -38,10 +68,57 @@ int diameter(struct node * root)
   int leftdiameter = diameter(root->left); 
   int rightdiameter = diameter(root->right); 
   return max(leftheight + rightheight + 1, max(leftdiameter, rightdiameter)); 
-}  
-void maxwidth(struct node* node)
+} 
+int get_size() 
 {
+	struct queue *temp=top;
+	int count=0;
+	if(top==NULL)
+	{
+		return 0;
+	}
+	else{
+		while(temp!=NULL)
+		{
+			temp=temp->next;
+			count++;
+		}
+		return count;
+	}
+}
+int maxwidth(struct node* node)
+{
+	if(node==NULL)
+	{
+		return 0;
+	}
 
+	int result=0;
+	push(node);
+	while(top!=NULL)
+	{
+		int count=get_size();
+		
+		result=max(count,result);
+		while(count--)
+		{
+			struct node* temp=top->data;
+			pop();
+			if(temp->left!=NULL)
+			{
+				push(temp->left);
+			}
+			if(temp->right!=NULL)
+			{
+				push(temp->right);
+			}
+			int c=get_size();
+			//printf("count is : %d",c);
+			
+		}
+		
+	}
+	return result;
 }
 
 void main()
@@ -59,6 +136,7 @@ void main()
     int width=maxwidth(root);
 	printf("height of tree is : %d",height_tree);
     printf("diameter of tree is : %d",dia);
+	printf("maxwidth of tree is : %d",width);
 
 
 }	
